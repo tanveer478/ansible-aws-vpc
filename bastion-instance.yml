@@ -13,13 +13,13 @@
     - name: Create vprofile ec2 key
       ec2_key:
         name: vprofile-key
-        region: "{{region}}"
+        region: "{{ region }}"
       register: key_out 
 
      
     - name: Save private key into file bastion-key.pem
       copy:
-        content: "{{key_out.key.private_key}}"
+        content: "{{ key_out.key.private_key }}"
         dest: "./bastion-key.pem"
         mode: 0600
       when: key_out.changed
@@ -28,20 +28,20 @@
       ec2_group:
         name: Bastion-host-sg
         description: Allows port 22 from everywhere
-        region: "{{region}}"
-        vpc_id: "{{vpcid}}"
+        region: "{{ region }}"
+        vpc_id: "{{ vpcid }}"
         rules:
           - proto: tcp
             from_port: 22
             to_port: 22
-            cidr_ip: "{{MYIP}}"
+            cidr_ip: "{{ MYIP }}"
       register: BastionSG_out
 
 
     - name: Creating Bastion host
       ec2: 
         key_name: vprofile-key
-        region: "{{region}}"
+        region: "{{ region }}"
         instance_type: t2.micro
         image: "{{ bastion_ami }}"
         wait: yes
@@ -55,6 +55,6 @@
           Name: "Bastion_host"
           Project: vprofile
           Owner: Devops Team
-        group_id: "{{BastionSG_out.group_id}}"
-        vpc_subnet_id: "{{pubsub1id}}"
+        group_id: "{{ BastionSG_out.group_id }}"
+        vpc_subnet_id: "{{ pubsub1id }}"
       register: bastionHost_out
