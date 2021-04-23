@@ -115,12 +115,12 @@
             gateway_id: "{{igw_out.gateway_id}}"
       register: pubRT_out
 
-    - name: Create new nat gateway, using an EIP address  and wait for available status.
+    - name: Create new nat gateway, using an EIP address and wait for available status.
       ec2_vpc_nat_gateway:
-        state: "{{state}}"
-        subnet_id: "{{pubsub1_out.subnet.id}}"
+        state: "{{ state }}"
+        subnet_id: "{{ pubsub1_out.subnet.id }}"
         wait: yes
-        region: "{{region}}"
+        region: "{{ region }}"
         if_exit_do_not_create: true
       register: NATGW_out
 
